@@ -41,7 +41,7 @@ def baixa_estimativas(table_code, estados, anoMesInicio, anoMesFim, classificati
     api['V'] = api['V'].apply(lambda x: str(x).replace('...', '').replace('-', ''))
     api['V'] = pd.to_numeric(api['V'])
     api['L'] = name_classification
-    api['M'] = '9999999'
+    api['M'] = '1111111'
 
     print('Renomeando colunas...')
     df = api[['L','D2C','D1C','M','D3N','D4N','V']]
@@ -49,8 +49,10 @@ def baixa_estimativas(table_code, estados, anoMesInicio, anoMesFim, classificati
     df_temporaria = df_final.reset_index(col_level=1).rename(columns = {'L':'Lavoura','D2C':'Ano','D1C':'id_estado','M':'id_municipio','D3N':'Produto'})
     level_one  = df_temporaria.columns.get_level_values(1)
     df_temporaria.columns = level_one
+    filtro = df_temporaria['Produto'].str[0:2] != '1 '
+    df = df_temporaria[filtro]
 
     print('Exportando DataFrame para arquivo CSV...')
-    df_temporaria.to_csv('LSPA {}-{} Estados.csv'.format(table_code,name_classification), sep=';')
+    df.to_csv('LSPA {}-{} Estados.csv'.format(table_code,name_classification), sep=';')
 
     print('Arquivo exportado com sucesso!\n')
