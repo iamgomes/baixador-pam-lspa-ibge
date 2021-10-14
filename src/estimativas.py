@@ -48,9 +48,9 @@ def baixa_estimativas(table_code, estados, anoMesInicio, anoMesFim, classificati
                                 '41':'42','42':'44','43':'45','51':'52','52':'53','53':'54','50':'55'})
 
     print('Renomeando colunas...')
-    df = api[['L','D2C','D1C','MAP','D3N','D4N','V']]
-    df_final = pd.pivot_table(df,index=['L','D2C','D1C','MAP','D3N'],columns=['D4N'])
-    df_temporaria = df_final.reset_index(col_level=1).rename(columns = {'L':'Lavoura','D2C':'Ano','D1C':'id_estado',
+    df = api[['L','D2C','D1C','M','MAP','D3N','D4N','V']]
+    df_final = pd.pivot_table(df,index=['L','D2C','D1C','M','MAP','D3N'],columns=['D4N'])
+    df_temporaria = df_final.reset_index(col_level=1).rename(columns = {'L':'Lavoura','D2C':'Ano','D1C':'id_estado','M':'id_municipio',
                                                                         'MAP':'id_estado_new','D3N':'Produto'})
     level_one  = df_temporaria.columns.get_level_values(1)
     df_temporaria.columns = level_one
