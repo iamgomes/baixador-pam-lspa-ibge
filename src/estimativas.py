@@ -41,12 +41,17 @@ def baixa_estimativas(table_code, estados, anoMesInicio, anoMesFim, classificati
     api['V'] = api['V'].apply(lambda x: str(x).replace('...', '').replace('-', ''))
     api['V'] = pd.to_numeric(api['V'])
     api['L'] = name_classification
-    api['M'] = '1111111'
+    api['M'] = '9999999'
+    # adaptando os códigos dos estados conforme os dados das exportações
+    api['MAP'] = api['D1C'].map({'11':'11','12':'12','13':'13','14':'14','15':'15','16':'16','17':'17','21':'21','22':'22','23':'23',
+                                '24':'24','25':'25','26':'26','27':'27','28':'31','29':'32','31':'33','32':'34','33':'36','35':'41',
+                                '41':'42','42':'44','43':'45','51':'52','52':'53','53':'54','50':'55'})
 
     print('Renomeando colunas...')
-    df = api[['L','D2C','D1C','M','D3N','D4N','V']]
-    df_final = pd.pivot_table(df,index=['L','D2C','D1C','M','D3N'],columns=['D4N'])
-    df_temporaria = df_final.reset_index(col_level=1).rename(columns = {'L':'Lavoura','D2C':'Ano','D1C':'id_estado','M':'id_municipio','D3N':'Produto'})
+    df = api[['L','D2C','D1C','MAP','D3N','D4N','V']]
+    df_final = pd.pivot_table(df,index=['L','D2C','D1C','MAP','D3N'],columns=['D4N'])
+    df_temporaria = df_final.reset_index(col_level=1).rename(columns = {'L':'Lavoura','D2C':'Ano','D1C':'id_estado',
+                                                                        'MAP':'id_estado_new','D3N':'Produto'})
     level_one  = df_temporaria.columns.get_level_values(1)
     df_temporaria.columns = level_one
     filtro = df_temporaria['Produto'].str[0:2] != '1 '
