@@ -10,7 +10,7 @@ from src.estados import lista_estados
 estados = lista_estados()
 municípios = lista_municípios()
 
-anoIncio = 2016
+anoInicio = 2016
 anoFim = date.today().year
 
 anoMesInicio = 202101
@@ -24,8 +24,8 @@ paramSidraEst = 6588, 48, 'Estimativas'
 if __name__ == '__main__':
     print('---INICIANDO DOWNLOAD DOS ARQUIVOS---\n')
 
-#    baixa_lavouras(paramSidraPerm[0], municípios, anoIncio, anoFim, paramSidraPerm[1], paramSidraPerm[2])
-#    baixa_lavouras(paramSidraTemp[0], municípios, anoIncio, anoFim, paramSidraTemp[1], paramSidraTemp[2])
+    baixa_lavouras(paramSidraPerm[0], municípios, anoInicio, anoFim, paramSidraPerm[1], paramSidraPerm[2])
+    baixa_lavouras(paramSidraTemp[0], municípios, anoInicio, anoFim, paramSidraTemp[1], paramSidraTemp[2])
     baixa_estimativas(paramSidraEst[0], estados, anoMesInicio, anoMesFim, paramSidraEst[1], paramSidraEst[2])
 
     print('\n\o/ MARAVILHA \o/\nTodos os arquivos foram baixados com sucesso!\n')

@@ -9,29 +9,39 @@ def baixa_estimativas(table_code, estados, anoMesInicio, anoMesFim, classificati
     nRowsTotal = 0
     tabela = []
 
-    for est in estados:
-        
-        nEst += 1
-        
-        api = sidrapy.get_table(table_code='{}'.format(table_code), territorial_level='3', ibge_territorial_code='{}'.format(est),
-                                period='{}-{}'.format(anoMesInicio, anoMesFim), classification='48', categories='allxt', header='n')
-        
-        print('{} - {} - Estado de {}'.format(nEst, est, api['D1N'][0].upper()))
+    while anoMesInicio <= anoMesFim:
 
-        nRows = 0
-        for row in range(0,len(api)):
-            dicionario = {'D2C':api['D2C'][row],'D1N':api['D1N'][row],'D1C':api['D1C'][row],'D3N':api['D3N'][row],
-                        'D4N':api['D4N'][row],'V':api['V'][row]}
+        try:
 
-            nRows += 1
-            nRowsTotal += 1
+            for est in estados:
+                
+                nEst += 1
+                
+                api = sidrapy.get_table(table_code='{}'.format(table_code), territorial_level='3', ibge_territorial_code='{}'.format(est),
+                                        period='{}'.format(anoMesInicio), classification='{}'.format(classification), categories='allxt', header='n')
+                
+                print('{} - {} - Estado de {}'.format(nEst, est, api['D1N'][0].upper()))
 
-            tabela.append(dicionario)
+                nRows = 0
 
-        print('{} linhas\n'.format(nRows))
+                for row in range(0,len(api)):
+                    dicionario = {'D2C':api['D2C'][row],'D1N':api['D1N'][row],'D1C':api['D1C'][row],'D3N':api['D3N'][row],
+                                'D4N':api['D4N'][row],'V':api['V'][row]}
+
+                    nRows += 1
+                    nRowsTotal += 1
+
+                    tabela.append(dicionario)
+
+                print('{} linhas\n'.format(nRows))
+
+        except:
+            break
+
+        anoMesInicio += 1
             
     anos = sorted(list(set([a['D2C'] for a in tabela])))
-            
+        
     print('{} Estados e {} linhas baixadas no total\nAnos {}\nLavouras de {}\n'.format(nEst, nRowsTotal, anos, name_classification))
 
     print('Convertendo tabela para DataFrame...\n')
@@ -101,7 +111,6 @@ def baixa_estimativas(table_code, estados, anoMesInicio, anoMesFim, classificati
                                                                         'MAP':'id_estado_new','D3N':'Produto'})
     level_one  = df_temporaria.columns.get_level_values(1)
     df_temporaria.columns = level_one
-    df_temporaria
 
     print('Exportando DataFrame para arquivo CSV...')
     df_temporaria.to_csv('LSPA {}-{} Estados.csv'.format(table_code,name_classification), sep=';')

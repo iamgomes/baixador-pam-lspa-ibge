@@ -5,7 +5,7 @@ import pandas as pd
 # LAVOURAS TEMPORÁRIAS table_code = 1612, classification = 81, 'TEMPORÁRIAS'
 
 
-def baixa_lavouras(table_code, municípios, anoIncio, anoFim, classification, name_classification):
+def baixa_lavouras(table_code, municípios, anoInicio, anoFim, classification, name_classification):
 
     nMun = 0
     nRowsTotal = 0
@@ -16,11 +16,12 @@ def baixa_lavouras(table_code, municípios, anoIncio, anoFim, classification, na
         nMun += 1
         
         api = sidrapy.get_table(table_code='{}'.format(table_code), territorial_level='6', ibge_territorial_code='{}'.format(mun),
-                                period='{}-{}'.format(anoIncio,anoFim), classification='{}'.format(classification), categories='allxt', header='n')
+                                period='{}-{}'.format(anoInicio,anoFim), classification='{}'.format(classification), categories='allxt', header='n')
 
         print('{} - {} - Município de {}'.format(nMun, mun, api['D1N'][0].upper()))
 
         nRows = 0
+
         for row in range(0,len(api)):
             dicionario = {'D2N':api['D2N'][row],'D1N':api['D1N'][row],'D1C':api['D1C'][row],'D3N':api['D3N'][row],
                         'D4N':api['D4N'][row],'V':api['V'][row]}
