@@ -50,7 +50,7 @@ def baixa_estimativas(table_code, estados, anoMesInicio, anoMesFim, classificati
 
     print('Higienizando dados...')
     api['V'] = api['V'].apply(lambda x: str(x).replace('...', '').replace('-', ''))
-    api['V'] = pd.to_numeric(api['V'])
+    api['V'] = pd.to_numeric(api['V'], downcast='float')
     api['L'] = name_classification
     api['M'] = '9999999'
     # adaptando os códigos dos estados conforme os dados das exportações

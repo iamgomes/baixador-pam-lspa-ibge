@@ -42,7 +42,7 @@ def baixa_lavouras(table_code, municípios, anoInicio, anoFim, classification, n
 
     print('Higienizando dados...')
     api['V'] = api['V'].apply(lambda x: str(x).replace('...', '').replace('-', ''))
-    api['V'] = pd.to_numeric(api['V'])
+    api['V'] = pd.to_numeric(api['V'], downcast='float')
     api['UF'] = api['D1N'].str[-3:-1]
     api['L'] = name_classification
 
