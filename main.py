@@ -13,9 +13,6 @@ municípios = lista_municípios()
 anoInicio = 2016
 anoFim = date.today().year
 
-anoMesInicio = 202101
-anoMesFim = int(date.today().strftime("%Y%m"))
-
 paramSidraPerm = 1613, 82, 'Permanentes'
 paramSidraTemp = 1612, 81, 'Temporárias'
 paramSidraEst = 6588, 48, 'Estimativas'
@@ -26,6 +23,6 @@ if __name__ == '__main__':
 
     baixa_lavouras(paramSidraPerm[0], municípios, anoInicio, anoFim, paramSidraPerm[1], paramSidraPerm[2])
     baixa_lavouras(paramSidraTemp[0], municípios, anoInicio, anoFim, paramSidraTemp[1], paramSidraTemp[2])
-    baixa_estimativas(paramSidraEst[0], estados, anoMesInicio, anoMesFim, paramSidraEst[1], paramSidraEst[2])
+    baixa_estimativas(paramSidraEst[0], estados, paramSidraEst[1], paramSidraEst[2])
 
     print('\n\o/ MARAVILHA \o/\nTodos os arquivos foram baixados com sucesso!\n')

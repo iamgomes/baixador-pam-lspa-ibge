@@ -3,42 +3,34 @@ import pandas as pd
 
 # LAVOURAS ESTIMATIVAS table_code = 6588, classification = 48, 'Estimativas'
 
-def baixa_estimativas(table_code, estados, anoMesInicio, anoMesFim, classification, name_classification):
+def baixa_estimativas(table_code, estados, classification, name_classification):
 
     nEst = 0
     nRowsTotal = 0
     tabela = []
 
-    while anoMesInicio <= anoMesFim:
+    for est in estados:
+        
+        nEst += 1
+        
+        api = sidrapy.get_table(table_code='{}'.format(table_code), territorial_level='3', ibge_territorial_code='{}'.format(est),
+                                period='last', classification='{}'.format(classification), categories='allxt', header='n')
+        
+        print('{} - {} - Estado de {}'.format(nEst, est, api['D1N'][0].upper()))
 
-        try:
+        nRows = 0
 
-            for est in estados:
-                
-                nEst += 1
-                
-                api = sidrapy.get_table(table_code='{}'.format(table_code), territorial_level='3', ibge_territorial_code='{}'.format(est),
-                                        period='{}'.format(anoMesInicio), classification='{}'.format(classification), categories='allxt', header='n')
-                
-                print('{} - {} - Estado de {}'.format(nEst, est, api['D1N'][0].upper()))
+        for row in range(0,len(api)):
+            dicionario = {'D2C':api['D2C'][row],'D1N':api['D1N'][row],'D1C':api['D1C'][row],'D3N':api['D3N'][row],
+                        'D4N':api['D4N'][row],'V':api['V'][row]}
 
-                nRows = 0
+            nRows += 1
+            nRowsTotal += 1
 
-                for row in range(0,len(api)):
-                    dicionario = {'D2C':api['D2C'][row],'D1N':api['D1N'][row],'D1C':api['D1C'][row],'D3N':api['D3N'][row],
-                                'D4N':api['D4N'][row],'V':api['V'][row]}
+            tabela.append(dicionario)
 
-                    nRows += 1
-                    nRowsTotal += 1
+        print('{} linhas\n'.format(nRows))
 
-                    tabela.append(dicionario)
-
-                print('{} linhas\n'.format(nRows))
-
-        except:
-            break
-
-        anoMesInicio += 1
             
     anos = sorted(list(set([a['D2C'] for a in tabela])))
         
@@ -50,7 +42,7 @@ def baixa_estimativas(table_code, estados, anoMesInicio, anoMesFim, classificati
 
     print('Higienizando dados...')
     api['V'] = api['V'].apply(lambda x: str(x).replace('...', '').replace('-', ''))
-    api['V'] = pd.to_numeric(api['V'], downcast='float')
+    api['V'] = pd.to_numeric(api['V'],downcast='signed')
     api['L'] = name_classification
     api['M'] = '9999999'
     # adaptando os códigos dos estados conforme os dados das exportações
