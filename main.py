@@ -1,7 +1,7 @@
 from datetime import date
 from src.lavouras import baixa_lavouras
 from src.estimativas import baixa_estimativas
-from src.api_municípios import lista_municípios
+from src.municípios import lista_municípios
 from src.estados import lista_estados
 
 #https://apisidra.ibge.gov.br/home/ajuda
@@ -21,7 +21,7 @@ paramSidraEst = 6588, 48, 'Estimativas'
 if __name__ == '__main__':
     print('---INICIANDO DOWNLOAD DOS ARQUIVOS---\n')
 
-    baixa_lavouras(paramSidraPerm[0], municípios, anoInicio, anoFim, paramSidraPerm[1], paramSidraPerm[2])
+#    baixa_lavouras(paramSidraPerm[0], municípios, anoInicio, anoFim, paramSidraPerm[1], paramSidraPerm[2])
     baixa_lavouras(paramSidraTemp[0], municípios, anoInicio, anoFim, paramSidraTemp[1], paramSidraTemp[2])
     baixa_estimativas(paramSidraEst[0], estados, paramSidraEst[1], paramSidraEst[2])
 

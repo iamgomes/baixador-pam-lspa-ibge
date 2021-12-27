@@ -1,6 +1,6 @@
 import basedosdados as bd
 
-def lista_municípios():
+def lista_municípios2():
     query = """
     SELECT *
     FROM basedosdados.br_ibge_populacao.municipio
