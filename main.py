@@ -28,6 +28,6 @@ if __name__ == '__main__':
     baixa_lavouras(paramSidraTemp[0], municípios, anoInicio, anoFim, paramSidraTemp[1], paramSidraTemp[2])
 
     print('\n---ESTIMATIVAS---\n')
-    baixa_estimativas(paramSidraEst[0], estados, paramSidraEst[1], paramSidraEst[2])
+#    baixa_estimativas(paramSidraEst[0], estados, paramSidraEst[1], paramSidraEst[2])
 
     print('\n\o/ MARAVILHA \o/\nTodos os arquivos foram baixados com sucesso!\n')

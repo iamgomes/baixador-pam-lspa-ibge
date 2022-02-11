@@ -26,20 +26,19 @@ def baixa_lavouras(table_code, municípios, anoInicio, anoFim, classification, n
             print('Ótimo, continuando...')
             continue
 
-    print('{} - {} - Município de {}'.format(nMun, mun, api['D1N'][0].upper()))
+        print('{} - {} - Município de {}'.format(nMun, mun, api['D1N'][0].upper()))
 
-    
-    nRows = 0
-    for row in range(0,len(api)):
-        dicionario = {'D2N':api['D2N'][row],'D1N':api['D1N'][row],'D1C':api['D1C'][row],'D3N':api['D3N'][row],
-                    'D4N':api['D4N'][row],'V':api['V'][row]}
+        nRows = 0
+        for row in range(0,len(api)):
+            dicionario = {'D2N':api['D2N'][row],'D1N':api['D1N'][row],'D1C':api['D1C'][row],'D3N':api['D3N'][row],
+                        'D4N':api['D4N'][row],'V':api['V'][row]}
 
-        nRows += 1
-        nRowsTotal += 1
+            nRows += 1
+            nRowsTotal += 1
 
-        tabela.append(dicionario)
+            tabela.append(dicionario)
 
-    print('{} linhas\n'.format(nRows))
+        print('{} linhas\n'.format(nRows))
             
     anos = sorted(list(set([a['D2N'] for a in tabela])))
         

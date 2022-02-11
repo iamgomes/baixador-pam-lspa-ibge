@@ -13,7 +13,7 @@ def baixa_estimativas(table_code, estados, classification, name_classification):
     for est in estados:
         try:         
             api = sidrapy.get_table(table_code='{}'.format(table_code), territorial_level='3', ibge_territorial_code='{}'.format(est),
-                                    period='last', classification='{}'.format(classification), categories='allxt', header='n')
+                                    period='last 2', classification='{}'.format(classification), categories='allxt', header='n')
             nEst += 1
             print('{} - {} - Estado de {}'.format(nEst, est, api['D1N'][0].upper()))
         except:
@@ -24,17 +24,17 @@ def baixa_estimativas(table_code, estados, classification, name_classification):
             print('Ótimo, continuando...')
             continue
 
-    nRows = 0
-    for row in range(0,len(api)):
-        dicionario = {'D2C':api['D2C'][row],'D1N':api['D1N'][row],'D1C':api['D1C'][row],'D3N':api['D3N'][row],
-                    'D4N':api['D4N'][row],'V':api['V'][row]}
+        nRows = 0
+        for row in range(0,len(api)):
+            dicionario = {'D2C':api['D2C'][row],'D1N':api['D1N'][row],'D1C':api['D1C'][row],'D3N':api['D3N'][row],
+                        'D4N':api['D4N'][row],'V':api['V'][row]}
 
-        nRows += 1
-        nRowsTotal += 1
+            nRows += 1
+            nRowsTotal += 1
 
-        tabela.append(dicionario)
+            tabela.append(dicionario)
 
-    print('{} linhas\n'.format(nRows))
+        print('{} linhas\n'.format(nRows))
 
             
     anos = sorted(list(set([a['D2C'] for a in tabela])))
