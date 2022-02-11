@@ -1,5 +1,6 @@
 import sidrapy
 import pandas as pd
+import time
 
 # LAVOURAS ESTIMATIVAS table_code = 6588, classification = 48, 'Estimativas'
 
@@ -10,26 +11,30 @@ def baixa_estimativas(table_code, estados, classification, name_classification):
     tabela = []
 
     for est in estados:
-        
-        nEst += 1
-        
-        api = sidrapy.get_table(table_code='{}'.format(table_code), territorial_level='3', ibge_territorial_code='{}'.format(est),
-                                period='last', classification='{}'.format(classification), categories='allxt', header='n')
-        
-        print('{} - {} - Estado de {}'.format(nEst, est, api['D1N'][0].upper()))
+        try:         
+            api = sidrapy.get_table(table_code='{}'.format(table_code), territorial_level='3', ibge_territorial_code='{}'.format(est),
+                                    period='last', classification='{}'.format(classification), categories='allxt', header='n')
+            nEst += 1
+            print('{} - {} - Estado de {}'.format(nEst, est, api['D1N'][0].upper()))
+        except:
+            print('Conexão recusada pelo servidor...')
+            print('Aguardando por 5 segundos')
+            print('ZZzzzz...')
+            time.sleep(5)
+            print('Ótimo, continuando...')
+            continue
 
-        nRows = 0
+    nRows = 0
+    for row in range(0,len(api)):
+        dicionario = {'D2C':api['D2C'][row],'D1N':api['D1N'][row],'D1C':api['D1C'][row],'D3N':api['D3N'][row],
+                    'D4N':api['D4N'][row],'V':api['V'][row]}
 
-        for row in range(0,len(api)):
-            dicionario = {'D2C':api['D2C'][row],'D1N':api['D1N'][row],'D1C':api['D1C'][row],'D3N':api['D3N'][row],
-                        'D4N':api['D4N'][row],'V':api['V'][row]}
+        nRows += 1
+        nRowsTotal += 1
 
-            nRows += 1
-            nRowsTotal += 1
+        tabela.append(dicionario)
 
-            tabela.append(dicionario)
-
-        print('{} linhas\n'.format(nRows))
+    print('{} linhas\n'.format(nRows))
 
             
     anos = sorted(list(set([a['D2C'] for a in tabela])))

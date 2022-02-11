@@ -19,10 +19,15 @@ paramSidraEst = 6588, 48, 'Estimativas'
 
 
 if __name__ == '__main__':
-    print('---INICIANDO DOWNLOAD DOS ARQUIVOS---\n')
+    print('\n---INICIANDO DOWNLOAD DOS ARQUIVOS---\n')
+    
+    print('\n---PERMANENTES---\n')
+    baixa_lavouras(paramSidraPerm[0], municípios, anoInicio, anoFim, paramSidraPerm[1], paramSidraPerm[2])
 
-#    baixa_lavouras(paramSidraPerm[0], municípios, anoInicio, anoFim, paramSidraPerm[1], paramSidraPerm[2])
+    print('\n---TEMPORÁRIAS---\n')
     baixa_lavouras(paramSidraTemp[0], municípios, anoInicio, anoFim, paramSidraTemp[1], paramSidraTemp[2])
+
+    print('\n---ESTIMATIVAS---\n')
     baixa_estimativas(paramSidraEst[0], estados, paramSidraEst[1], paramSidraEst[2])
 
     print('\n\o/ MARAVILHA \o/\nTodos os arquivos foram baixados com sucesso!\n')

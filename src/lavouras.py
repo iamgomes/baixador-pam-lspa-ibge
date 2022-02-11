@@ -1,5 +1,6 @@
 import sidrapy
 import pandas as pd
+import time
 
 # LAVOURAS PERMANENTES table_code = 1613, classification = 82, 'Permanentes'
 # LAVOURAS TEMPORÁRIAS table_code = 1612, classification = 81, 'TEMPORÁRIAS'
@@ -10,28 +11,35 @@ def baixa_lavouras(table_code, municípios, anoInicio, anoFim, classification, n
     nMun = 0
     nRowsTotal = 0
     tabela = []
-
+        
     for mun in municípios:
-        
-        nMun += 1
-        
-        api = sidrapy.get_table(table_code='{}'.format(table_code), territorial_level='6', ibge_territorial_code='{}'.format(mun),
-                                period='{}-{}'.format(anoInicio,anoFim), classification='{}'.format(classification), categories='allxt', header='n')
+        try:
+            api = sidrapy.get_table(table_code='{}'.format(table_code), territorial_level='6', ibge_territorial_code='{}'.format(mun), 
+                                    period='{}-{}'.format(anoInicio,anoFim), classification='{}'.format(classification), categories='allxt', header='n')
+            nMun += 1
+            print('{} - {} - Município de {}'.format(nMun, mun, api['D1N'][0].upper()))
+        except:
+            print('Conexão recusada pelo servidor...')
+            print('Aguardando por 5 segundos')
+            print('ZZzzzz...')
+            time.sleep(5)
+            print('Ótimo, continuando...')
+            continue
 
-        print('{} - {} - Município de {}'.format(nMun, mun, api['D1N'][0].upper()))
+    print('{} - {} - Município de {}'.format(nMun, mun, api['D1N'][0].upper()))
 
-        nRows = 0
+    
+    nRows = 0
+    for row in range(0,len(api)):
+        dicionario = {'D2N':api['D2N'][row],'D1N':api['D1N'][row],'D1C':api['D1C'][row],'D3N':api['D3N'][row],
+                    'D4N':api['D4N'][row],'V':api['V'][row]}
 
-        for row in range(0,len(api)):
-            dicionario = {'D2N':api['D2N'][row],'D1N':api['D1N'][row],'D1C':api['D1C'][row],'D3N':api['D3N'][row],
-                        'D4N':api['D4N'][row],'V':api['V'][row]}
+        nRows += 1
+        nRowsTotal += 1
 
-            nRows += 1
-            nRowsTotal += 1
+        tabela.append(dicionario)
 
-            tabela.append(dicionario)
-
-        print('{} linhas\n'.format(nRows))
+    print('{} linhas\n'.format(nRows))
             
     anos = sorted(list(set([a['D2N'] for a in tabela])))
         
